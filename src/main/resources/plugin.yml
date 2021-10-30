@@ -1,0 +1,6 @@
+name: ExploitFixer
+version: ${project.version}
+main: dev.imptovskii.aeflite.Main
+description: ExploitFixer for /new places/
+softdepend: [ ProtocolLib ]
+

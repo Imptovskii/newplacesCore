@@ -1,0 +1,119 @@
+package dev.imptovskii.aeflite.events;
+
+import dev.imptovskii.aeflite.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Redstone implements Listener {
+    private static Redstone instance;
+    private final Main plugin;
+    private final FileConfiguration config;
+    private final Map<Player, Integer> leverHashMap = new HashMap<>();
+    private final int rateLimit;
+    private long lastGathered;
+
+    public Redstone(Main plugin) {
+        this.plugin = plugin;
+        this.config = plugin.getConfig();
+        instance = this;
+        rateLimit = config.getInt("LeverLimitAmount");
+    }
+
+    public static void clearLeverHashmap() {
+        instance.leverHashMap.clear();
+    }
+
+    @EventHandler
+    public void onRedstoneEvent(BlockRedstoneEvent evt) {
+        double tps = Bukkit.getServer().getTPS()[0];
+        long now = Instant.now().toEpochMilli();
+        if (tps < config.getDouble("Redstone")) {
+            int current = evt.getOldCurrent();
+            evt.setNewCurrent(current);
+            if ((now - lastGathered) >= 30000) {
+                lastGathered = now;
+                plugin.getLogger().info("Disabled all redstone because tps is " + tps);
+            }
+        } else {
+            int newCurrent = evt.getNewCurrent();
+            evt.setNewCurrent(newCurrent);
+        }
+    }
+
+    @EventHandler
+    public void onPistonExtendEvent(BlockPistonExtendEvent evt) {
+        double tps = Bukkit.getServer().getTPS()[0];
+        if (tps < config.getDouble("Redstone")) {
+            evt.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPistonRetractEvent(BlockPistonRetractEvent evt) {
+        double tps = Bukkit.getServer().getTPS()[0];
+        if (tps < config.getDouble("Redstone")) {
+            evt.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPull(PlayerInteractEvent event) {
+        if (config.getBoolean("RateLimitLevers")) {
+            try {
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    if (event.getClickedBlock().getType() == Material.LEVER) {
+                        Player player = event.getPlayer();
+                        if (leverHashMap.containsKey(player)) {
+                            leverHashMap.put(player, leverHashMap.get(player) + 1);
+                        } else {
+                            leverHashMap.put(player, 1);
+                        }
+                        if (leverHashMap.get(player) > rateLimit) {
+                            event.setCancelled(true);
+                            if (config.getBoolean("RateLimitKick"))
+                                player.kickPlayer(ChatColor.translateAlternateColorCodes('&', config.getString("RateLimitKickMsg")));
+                            leverHashMap.remove(player);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @EventHandler
+    private void onExplode(EntityExplodeEvent evt) {
+        double tps = Bukkit.getServer().getTPS()[0];
+        if (tps < config.getDouble("Explosions")) {
+            evt.setCancelled(true);
+        }
+
+        if (config.getBoolean("DisableExplosions")) {
+            evt.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    private void onExplodePrime(ExplosionPrimeEvent evt) {
+        if (config.getBoolean("DisableExplosions")) {
+            evt.setCancelled(true);
+        }
+    }
+}
