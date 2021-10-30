@@ -1,0 +1,24 @@
+package dev.imptovskii.aeflite.events;
+
+import lombok.RequiredArgsConstructor;
+import dev.imptovskii.aeflite.Main;
+import org.bukkit.entity.Arrow;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+
+@RequiredArgsConstructor
+public class AntiBowBomb implements Listener {
+    private final Main plugin;
+
+    @EventHandler
+    public void onArrow(ProjectileLaunchEvent evt) {
+        if (plugin.getConfig().getBoolean("PreventBowBombExploit")) {
+            if (evt.getEntity() instanceof Arrow) {
+                if (evt.getEntity().getVelocity().lengthSquared() > plugin.getConfig().getInt("MaxBowSquaredVelocity")) {
+                    evt.setCancelled(true);
+                }
+            }
+        }
+    }
+}
