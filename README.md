@@ -14,7 +14,6 @@ Anarchy - для нашего анархичного сервера, и CPVP - �
 
 Проект легко собирается из под IntelliJ IDEA в Maven
 
-Исходный код модулей был взят из:
-https://github.com/moom0o/AnarchyExploitFixes и https://github.com/Bleep0/AntiBookBan
-
-Я не претендую на авторство кода.
+Исходный код модулей AntiBurrow, AntiBowBomb, AntiPacketExploit, AntiRedstone был взят из:
+https://github.com/moom0o/AnarchyExploitFixes
+И собран под новый API.
