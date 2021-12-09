@@ -13,7 +13,3 @@
 Anarchy - для нашего анархичного сервера, и CPVP - для нашего CPVP сервера.
 
 Проект легко собирается из под IntelliJ IDEA в Maven
-
-Исходный код модулей AntiBurrow, AntiBowBomb, AntiPacketExploit, AntiRedstone был взят из:
-https://github.com/moom0o/AnarchyExploitFixes
-И собран под новый API.
