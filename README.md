@@ -1,6 +1,6 @@
 # /new places/ Core
 
-![изображение](https://user-images.githubusercontent.com/82046704/149844417-a32326f1-1a6c-4443-9614-1da372b973b6.png)
+![изображение](https://psv4.userapi.com/c520036/u306539345/docs/d11/386ec9c1a477/Novy_proekt.png?extra=vEiyqd_ha0ukQo4_3cWiBl3GirO0shdYET3A_P4pyeMIAJOfToGfZEbQbJF7_ArwL_oN1whDUD39YecBCPqTJH343qYEhpKOO9YyaXGze385Go3-RwyMehZCjO2KYUnKtoVrvb015watkpGlnsdSWvI)
 
 Это самопал из разных фиксов из плагинов адаптированных под мои цели для моего сервера /new places/
 
