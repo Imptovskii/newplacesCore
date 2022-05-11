@@ -1,4 +1,4 @@
-# /new places/ ExploitFixer
+# /new places/ Core
 
 Это самопал из разных фиксов из плагинов адаптированных под мои цели для моего сервера /new places/
 
