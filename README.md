@@ -1,4 +1,5 @@
 # /new places/ Core
+![изображение](https://user-images.githubusercontent.com/82046704/172054915-33821ffe-ba30-43af-a9f8-9ed0a8511ef3.png)
 
 Это самопал из разных фиксов из плагинов адаптированных под мои цели для моего сервера /new places/
 
